@@ -5,7 +5,7 @@ Tired of constant client requests to tweak that elusive snippet or image on your
 
 Enter **Flask-Edits**. Simply mark sections of your templates with **{% editable %}**, and voilà, they're ready for modification in a sleek admin panel. Say goodbye to the hassle of copy adjustments.
 
-![App Screenshot](https://via.placeholder.com/800x300?text=App+Screenshot+Here)
+![App Screenshot](https://raw.githubusercontent.com/MahirShah07/Flask_Edits/main/ReadMePhotos/Image1.png)
 ## Installation
 ```bash
   pip install flask_edits
@@ -35,7 +35,7 @@ edits = Edits(app)
 ## Edits Seaction
 Edit any page with registered editable sections directly in the interface. Currently, only static HTML is supported, with Jinja2 support on the roadmap.
 
-![App Screenshot](https://via.placeholder.com/800x300?text=App+Screenshot+Here)
+![App Screenshot](https://raw.githubusercontent.com/MahirShah07/Flask_Edits/main/ReadMePhotos/Image2.png)
 
 The **Summernote HTML Editor** is included but not activated by default. Enable it with:
 ```bash
@@ -89,12 +89,12 @@ Now you can access all your edits from **/edits** (default) but to make it secur
         ```bash
         app.config['EDITS_STATIC'] = True    #default: False
         ```
-        ![App Screenshot](https://via.placeholder.com/800x300?text=App+Screenshot+Here)
+        ![App Screenshot](https://raw.githubusercontent.com/MahirShah07/Flask_Edits/main/ReadMePhotos/Image3.png)
         * **EDITS_PREVIEW**: Preview mode, enabled by default, ensures edits remain hidden until ?preview=true is appended to the URL. Easily toggle preview mode in the admin panel for seamless pre-live editing. Turn on previews for production use.
         ```bash
         app.config['EDITS_PREVIEW'] = False    #default: True
         ```
-        ![App Screenshot](https://via.placeholder.com/800x100?text=App+Screenshot+Here)
+        ![App Screenshot](https://raw.githubusercontent.com/MahirShah07/Flask_Edits/main/ReadMePhotos/Image4.png)
         * **PERMANENT_SESSION_LIFETIME**: If session.permanent is true, the cookie’s expiration will be set this number of seconds in the future. Can either be a datetime.timedelta or an int. Flask’s default cookie implementation validates that the cryptographic signature is not older than this value.
         ```bash
         app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=60)   #default: 60min
@@ -120,7 +120,7 @@ Now you can access all your edits from **/edits** (default) but to make it secur
     #Mention your apps login route where you are loggin in users.
     edits = Edits(app)
     ```
-![Logo](https://via.placeholder.com/800x200?text=App+Screenshot+Here)
+![Logo](https://raw.githubusercontent.com/MahirShah07/Flask_Edits/main/ReadMePhotos/logo.png)
 
 ## Resources
  - [MDI Icons From pictogrammers](https://pictogrammers.github.io/@mdi/font/2.0.46/)
