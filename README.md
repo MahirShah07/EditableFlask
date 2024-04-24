@@ -121,17 +121,18 @@ Now you can access all your edits from **/edits** (default) but to make it secur
     #Mention your apps login route where you are loggin in users.
     edits = Edits(app)
     ```
-![Logo](https://raw.githubusercontent.com/MahirShah07/EditableFlask/main/readme-images/logo.png)
-
 ## Resources
  - [MDI Icons From pictogrammers](https://pictogrammers.github.io/@mdi/font/2.0.46/)
 
 ## Authors
 - [@MahirShah07](https://www.mahirshah.dev)
-
+  
+View This Repository at GitHub: https://github.com/MahirShah07/EditableFlask
 ## Support
 For support, email mahir.shah.sd@gmail.com or join our contact me from my Website https://mahirshah.dev.
 
+
+![Logo](https://raw.githubusercontent.com/MahirShah07/EditableFlask/main/readme-images/logo.png)
 ## Copyright 2024 Mahir Shah
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
