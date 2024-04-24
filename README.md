@@ -5,7 +5,7 @@ Tired of constant client requests to tweak that elusive snippet or image on your
 
 Enter **Flask-Edits**. Simply mark sections of your templates with **{% editable %}**, and voilà, they're ready for modification in a sleek admin panel. Say goodbye to the hassle of copy adjustments.
 
-![App Screenshot](https://raw.githubusercontent.com/MahirShah07/Flask_Edits/main/ReadMePhotos/Image1.png)
+![App Screenshot](https://raw.githubusercontent.com/MahirShah07/EditableFlask/main/readme-images/Image1.png)
 ## Installation
 ```bash
   pip install flask_edits
@@ -35,7 +35,7 @@ edits = Edits(app)
 ## Edits Seaction
 Edit any page with registered editable sections directly in the interface. Currently, only static HTML is supported, with Jinja2 support on the roadmap.
 
-![App Screenshot](https://raw.githubusercontent.com/MahirShah07/Flask_Edits/main/ReadMePhotos/Image2.png)
+![App Screenshot](https://raw.githubusercontent.com/MahirShah07/EditableFlask/main/readme-images/Image2.png)
 
 The **Summernote HTML Editor** is included but not activated by default. Enable it with:
 ```bash
@@ -73,6 +73,7 @@ Now you can access all your edits from **/edits** (default) but to make it secur
     app.config['EDITS_PASSWORD'] = 'your_password'
     edits = Edits(app)
     ```
+    ![App Screenshot](https://raw.githubusercontent.com/MahirShah07/EditableFlask/main/readme-images/Image3.png)
     * **EDITS_USERNAME & EDITS_PASSWORD**
         * **Remove EDITS_USERNAME & EDITS_PASSWORD**: After running the app for first time remove EDITS_USERNAME & EDITS_PASSWORD from congif as as soon as the app recives the  EDITS_USERNAME & EDITS_PASSWORD it creates users and keeping USAMENAME and PASSSWORD in your file is not reecomended for deployment purposes.
         * **Using only EDITS_USERNAME or EDITS_PASSWORD**: In the flask_edits there is a function where if only EDITS_USERNAME or only EDITS_PASSWORD is provided then your username and password will be same.
@@ -89,12 +90,12 @@ Now you can access all your edits from **/edits** (default) but to make it secur
         ```bash
         app.config['EDITS_STATIC'] = True    #default: False
         ```
-        ![App Screenshot](https://raw.githubusercontent.com/MahirShah07/Flask_Edits/main/ReadMePhotos/Image3.png)
+        ![App Screenshot](https://raw.githubusercontent.com/MahirShah07/EditableFlask/main/readme-images/Image4.png)
         * **EDITS_PREVIEW**: Preview mode, enabled by default, ensures edits remain hidden until ?preview=true is appended to the URL. Easily toggle preview mode in the admin panel for seamless pre-live editing. Turn on previews for production use.
         ```bash
         app.config['EDITS_PREVIEW'] = False    #default: True
         ```
-        ![App Screenshot](https://raw.githubusercontent.com/MahirShah07/Flask_Edits/main/ReadMePhotos/Image4.png)
+        ![App Screenshot](https://raw.githubusercontent.com/MahirShah07/EditableFlask/main/readme-images/Image5.png)
         * **PERMANENT_SESSION_LIFETIME**: If session.permanent is true, the cookie’s expiration will be set this number of seconds in the future. Can either be a datetime.timedelta or an int. Flask’s default cookie implementation validates that the cryptographic signature is not older than this value.
         ```bash
         app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=60)   #default: 60min
@@ -120,7 +121,7 @@ Now you can access all your edits from **/edits** (default) but to make it secur
     #Mention your apps login route where you are loggin in users.
     edits = Edits(app)
     ```
-![Logo](https://raw.githubusercontent.com/MahirShah07/Flask_Edits/main/ReadMePhotos/logo.png)
+![Logo](https://raw.githubusercontent.com/MahirShah07/EditableFlask/main/readme-images/logo.png)
 
 ## Resources
  - [MDI Icons From pictogrammers](https://pictogrammers.github.io/@mdi/font/2.0.46/)
