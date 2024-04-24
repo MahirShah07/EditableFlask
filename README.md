@@ -3,17 +3,17 @@
 
 Tired of constant client requests to tweak that elusive snippet or image on your **/about** page?
 
-Enter **Flask-Edits**. Simply mark sections of your templates with **{% editable %}**, and voilà, they're ready for modification in a sleek admin panel. Say goodbye to the hassle of copy adjustments.
+Enter **EditableFlask**. Simply mark sections of your templates with **{% editable %}**, and voilà, they're ready for modification in a sleek admin panel. Say goodbye to the hassle of copy adjustments.
 
 ![App Screenshot](https://raw.githubusercontent.com/MahirShah07/EditableFlask/main/readme-images/Image1.png)
 ## Installation
 ```bash
-  pip install flask_edits
+  pip install EditableFlask
 ```
 ## Usage
 ```bash
 from flask import Flask
-from flask_edits import Edits
+from EditableFlask import Edits
 
 app = Flask(__name__)
 edits = Edits(app)
@@ -23,7 +23,7 @@ All edits are neatly saved to disk as JSON. Configure your python file path to s
 
 ```bash
 from flask import Flask
-from flask_edits import Edits
+from EditableFlask import Edits
 import os
 
 app = Flask(__name__)
@@ -58,11 +58,11 @@ For Further information Visit [SUMMERNOTE's Webite](https://summernote.org/).
 Now you can access all your edits from **/edits** (default) but to make it secure so that no one else could access it is advised to add a security system. There are two ways this can be done:
 
 ## Security
-**Security Reminder**: Flask_Edits doesn't presume your authentication method by default. Protect the admin interface from following methods from developer.
-* **Automatic Lock** (Reccomended): In flask_edits itself there is an **sqlalchamy** based login manager if you want to use that use the following code. There are few points to consider before using the method.
+**Security Reminder**: EditableFlask doesn't presume your authentication method by default. Protect the admin interface from following methods from developer.
+* **Automatic Lock** (Reccomended): In EditableFlask itself there is an **sqlalchamy** based login manager if you want to use that use the following code. There are few points to consider before using the method.
     ```bash
     from flask import Flask
-    from flask_edits import Edits
+    from EditableFlask import Edits
     import os
 
     app = Flask(__name__)
@@ -76,7 +76,7 @@ Now you can access all your edits from **/edits** (default) but to make it secur
     ![App Screenshot](https://raw.githubusercontent.com/MahirShah07/EditableFlask/main/readme-images/Image3.png)
     * **EDITS_USERNAME & EDITS_PASSWORD**
         * **Remove EDITS_USERNAME & EDITS_PASSWORD**: After running the app for first time remove EDITS_USERNAME & EDITS_PASSWORD from congif as as soon as the app recives the  EDITS_USERNAME & EDITS_PASSWORD it creates users and keeping USAMENAME and PASSSWORD in your file is not reecomended for deployment purposes.
-        * **Using only EDITS_USERNAME or EDITS_PASSWORD**: In the flask_edits there is a function where if only EDITS_USERNAME or only EDITS_PASSWORD is provided then your username and password will be same.
+        * **Using only EDITS_USERNAME or EDITS_PASSWORD**: In the EditableFlask there is a function where if only EDITS_USERNAME or only EDITS_PASSWORD is provided then your username and password will be same.
     * **Few other Terms you could define:**
         * **EDITS_URL**: It is the url where you will be able to access you dashbaord. Here is an example of how you could define it.
         ```bash
@@ -111,7 +111,7 @@ Now you can access all your edits from **/edits** (default) but to make it secur
 * **Manual Lock**: If you alredy have a user-managemnt system and want to add same to it then, we also have support that users too. Here is an example of cose of how you code should look like.
     ```bash
     from flask import Flask
-    from flask_edits import Edits
+    from EditableFlask import Edits
     import os
 
     app = Flask(__name__)
