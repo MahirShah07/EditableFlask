@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Editable Flask</title>
+
+    <link href="{{ url_for('edits.static', filename='bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" />
+    <link href="{{ url_for('edits.static', filename='bootstrap/css/navbar.css')}}" rel="stylesheet" />
+    <link href="{{ url_for('edits.static', filename='bootstrap-switch/css/bootstrap-switch.min.css') }}" rel="stylesheet">
+
+    {% if summernote %}
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.min.css" rel="stylesheet" />
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" />
+    {% endif %}
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+      .btn-logout {
+        background-color: red;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        margin-left: 15px;
+      }
+    
+      .btn-logout:hover {
+        background-color: rgb(226, 26, 26); 
+        color: #eee;/* Darker red on hover */
+      }
+    </style>
+    
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">EditableFlask</a>
+          </div>
+          <div class="pull-right" style="margin-top: 6px;">
+              <label style="font-weight: normal; vertical-align:middle;">Preview</label>
+              &nbsp;&nbsp;
+              <input type="checkbox" name="mode" {% if preview %}checked{% endif %} />
+              <a type="submit" href="/edits/logout" class="btn btn-logout">Logout</a>
+            </div>
+        </div>
+      </div>
+
+      {% if edits|length %}
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">Editable Pages</div>
+            <div class="list-group">
+              {% for page, regions in edits.items() %}
+                <a href="{{ url_for('edits.index', page=page) }}" class="list-group-item">
+                  <span class="badge">{{ regions.keys()|length }}</span>
+                  {{ page }}
+                </a>
+              {% endfor %}
+              <a href="{{ url_for('edits.index', page='static') }}" class="list-group-item">
+                <span class="badge"></span>
+                STATIC
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-8">
+            <p class="lead">Editing {{ page }}</p>
+            <form method="POST" action="{{ url_for('edits.save') }}" onsubmit="save()">
+              <input type="hidden" name="page" value="{{ page }}" />
+              {% for key, section in edits[page].items() %}
+              <small><strong>{{ key|upper }}</strong></small>
+              <div class="form-group" style="margin-top: 5px;">
+                  {% if summernote %}
+                  <div class="summernote" id="{{ key }}">{{ section.edited if section.edited is not none else section.original }}</div>
+                  <!-- Add a hidden input field to submit the Summernote content -->
+                  <input type="hidden" name="{{ key }}" value="{{ section.edited if section.edited is not none else section.original }}" />
+                  {% else %}
+                  <textarea class="form-control" rows="4" name="{{ key }}">{{ section.edited if section.edited is not none else section.original }}</textarea>
+                  {% endif %} 
+              </div>
+              {% endfor %}
+              <input type="submit" value="Save Page" class="btn btn-primary" />
+          </form>
+          
+        </div>
+      </div>
+      {% else %}
+      <div class="row">
+        <div class="col-sm-12" style="text-align: center; padding-top: 40px;">
+          <i class="glyphicon glyphicon-warning-sign" style="font-size: 100px; color: #eee;"></i>
+          <p class="lead" style="width: 50%; margin: 0 auto; padding-top: 40px;">No editable pages loaded yet. After adding editable regions to your templates, visit each page in your browser to load it.</p>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </body>
+
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.min.js"></script> 
+  <script type="text/javascript" src="{{ url_for('edits.static', filename='bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
+
+  {% if summernote %}
+  <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script> 
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/mode/xml/xml.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/codemirror/2.36.0/formatting.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+  {% endif %}
+
+  <script>
+    $(document).ready(function() {
+      $('[name="mode"]').bootstrapSwitch({
+        onText: 'On',
+        offText: 'Off',
+        onSwitchChange: function(e, state) {
+          $.post("{{ url_for('edits.preview') }}", {state: state});
+        }
+      });
+
+      {% if summernote %}
+      $(document).ready(function() {
+  $('.summernote').each(function() {
+    $(this).summernote({
+      height: 100,
+      toolbar: [
+        ['style', ['bold', 'italic', 'underline', 'clear']],
+        ['insert', ['link', 'picture', 'video', 'hr', 'table']],
+        ['font', ['fontname', 'fontsize', 'fontsizeunit', 'color', 'forecolor', 'backcolor']],
+        ['paragraph', ['style', 'ol', 'ul', 'paragraph', 'height']],
+        ['misc', ['fullscreen', 'codeview', 'undo', 'redo', 'help']]
+      ]
+    });
+  });
+});
+
+      {% endif %}
+    });
+
+    {% if summernote %}
+    function save() {
+    $('.summernote').each(function() {
+        var content = $(this).summernote('code');
+        $(this).siblings('input[type="hidden"]').val(content);
+    });
+}
+
+    {% endif %}
+  </script>
+</html>

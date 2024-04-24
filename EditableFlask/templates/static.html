@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+
+    <title>Static File Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('edits.static', filename='style.css') }}" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Modals -->
+    <div class="modal fade" id="createFolderModal" tabindex="-1" aria-labelledby="createFolderModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createFolderModalLabel">Create Folder</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="/edits/static-view/create_folder">
+                    <input type="hidden" name="location" value="{{ folder_location }}" />
+                    <div class="modal-body">
+                        <div class="mb-3">
+                        <label for="folderName" class="form-label">New Folder:</label>
+                        <input type="text" class="form-control" name="folder_name" id="folderName" placeholder="Enter folder name">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>  
+    <div class="modal fade" id="uploadFileModal" tabindex="-1" aria-labelledby="uploadFileModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="uploadFileModalLabel">Upload Files</h5>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                    <form method="POST" action="/edits/static-view/upload" enctype='multipart/form-data'>
+                        <table>
+                            <tr>
+                                <div class="modal-body">
+                                    <label for="fileName" class="form-label">File Name:</label>
+                                    <input type="text" class="form-control" name="file_name" id="fileName" placeholder="Enter file name">
+                                </div>
+                            </tr>
+                            <tr><center>
+                                <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
+                                <form class="form-container">
+                                    <input type="hidden" name="location" value="{{ folder_location }}"/>
+                                    <div class="upload-files-container">
+                                        <div class="drag-file-area">
+                                            <span class="material-icons-outlined upload-icon"> file_upload </span>
+                                            <h3 class="dynamic-message"> Drag & drop any file here </h3>
+                                            <label class="label" style="width: 22vh;"> or <span class="browse-files"> <input type="file" name="file" class="default-file-input" required/> <span class="browse-files-text">browse file</span> <span>from device</span> </span> </label>
+                                        </div>
+                                        <span class="cannot-upload-message"> <span class="material-icons-outlined">error</span> Please select a file first <span class="material-icons-outlined cancel-alert-button">cancel</span> </span>
+                                        <div class="file-block">
+                                            <div class="file-info"> <span class="material-icons-outlined file-icon">description</span> <span class="file-name"> </span> | <span class="file-size">  </span> </div>
+                                            <span class="material-icons remove-file-icon">delete</span>
+                                            <div class="progress-bar"> </div>
+                                        </div>
+                                        <button type="submit" class="upload-button"> Upload </button>
+                                    </div>
+                                </form>
+                                </center>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="renameFileFolderModal" tabindex="-1" aria-labelledby="renameFileFolderModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createFolderModalLabel">Rename File/Folder</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="/edits/static-view/rename">
+                    <input type="hidden" name="location" value="{{ folder_location }}" />
+                    <div class="modal-body">
+                        <div class="mb-3">
+                        <label for="folderFileName" class="form-label">Rename:</label>
+                        <input type="text" class="form-control" name="file_folder_name" id="folderFileName" placeholder="Enter new name for folder/file">
+                        <input type="hidden" name="name"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Rename</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>  
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css"
+        integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossorigin="anonymous" />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-lg-4 col-sm-6">
+                                {% if folder_location %} 
+                                <div class="search-box mb-2 me-2 position-relative">
+                                    <form method="POST" action="/edits/static-view/search">
+                                        <input type="hidden" name="location" value="{{ folder_location }}" />
+                                        <table>
+                                            <td>
+                                                <input type="text" id="searchInput" name="searchInput" class="form-control bg-light border-light rounded" style="width: 50vw;" placeholder="Search...">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="eva eva-search-outline search-icon position-absolute top-50 translate-middle-y end-0 me-2">
+                                                    <g data-name="Layer 2">
+                                                        <g data-name="search">
+                                                            <rect width="24" height="24" opacity="0"></rect>
+                                                            <path d="M20.71 19.29l-3.4-3.39A7.92 7.92 0 0 0 19 11a8 8 0 1 0-8 8 7.92 7.92 0 0 0 4.9-1.69l3.39 3.4a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42zM5 11a6 6 0 1 1 6 6 6 6 0 0 1-6-6z"></path>
+                                                        </g>
+                                                    </g>
+                                                </svg>
+                                            </td>   
+                                            <td>
+                                                <button type="submit" class="search-btn"><i class="mdi mdi-magnify mdi-24px me-1 text-primary"></i></button>
+                                                <style>
+                                                    .search-btn {
+                                                        border: none;
+                                                        outline: none;
+                                                        box-shadow: none;
+                                                        background-color: white;
+                                                    }
+                                                </style>
+                                            </td>
+                                        </table>
+                                    </form>
+                                </div> 
+                                {% endif %}                               
+                            </div>
+                            <div class="col-lg-8 col-sm-6">
+                                <div class="mt-4 mt-sm-0 d-flex align-items-center justify-content-sm-end">
+                                    <div class="mb-2 me-2">
+                                        <div class="dropdown">
+                                            {% if folder_location %}
+                                            <button class="btn btn-primary dropdown-toggle" type="button"
+                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="mdi mdi-plus me-1"></i> Action
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#createFolderModal">
+                                                    <i class="mdi mdi-folder-outline me-1"></i>Create Folder
+                                                </a>                                                
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadFileModal">
+                                                    <i class="mdi mdi-cloud-upload me-1"></i>Upload File
+                                                </a>  
+                                            </div>
+                                            <button style="display: none;" class="btn btn-primary">
+                                            <form method="POST" action="/edits/static-view/back">
+                                                <input type="hidden" name="location" value="{{ folder_location }}" />
+                                                <button class="btn btn-primary" type="submit">
+                                                    <i class="mdi mdi-keyboard-return me-1"></i> Back
+                                                </button>
+                                            </form>
+                                            </button>
+                                            {% endif %}
+                                            {% if searched_location %}
+                                            <a class="btn btn-primary" href="{{ searched_location }}" type="button">
+                                                <i class="mdi mdi-keyboard-return me-1"></i> Back
+                                            </a>
+                                            {% endif %}
+                                            <a class="btn btn-primary" href="/edits" type="button">
+                                                <i class="mdi mdi-home me-1"></i> Home
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-wrap">
+                            <h5 class="font-size-16 me-3">{% if folder_location %}My Static Files{% else %}Searched Files{% endif %}</h5>
+                        </div>
+                        <p>{% if folder_location %}Current Location: {{ '/'+folder_location }}{% else %}Searched Location: {{ '/'+searched_location }}{% endif %}</p>
+                        <hr class="mt-2">
+                        <div class="table-responsive">
+                            <table class="table align-middle table-nowrap table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Date modified</th>
+                                        <th scope="col">Size</th>
+                                        <th scope="col">Location</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item, details in contents.items() %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ '/edits'+details.location }}"{% if details.type == 'file' %}target="_blank"{% endif %} class="text-dark fw-medium">
+                                                {% if details.type == 'folder' %}
+                                                    <i class="mdi mdi-folder font-size-16 align-middle text-warning me-2"></i>
+                                                {% elif details.type == 'file' %}
+                                                    {% set extension_with_dot = details.extension|lower %}
+                                                    {% if extension_with_dot in ['.rgb', '.gif', '.pbm', '.pgm', '.ppm', '.tiff', '.rast', '.xbm', '.jpeg', '.bmp', '.png', '.webp', '.exr', '.tga'] %}
+                                                        <i class="mdi mdi-image font-size-16 align-middle text-success me-2"></i>
+                                                    {% elif extension_with_dot in ['.html', '.htm', '.xhtml', '.xml'] %}
+                                                        <i class="mdi mdi-language-html5 font-size-16 align-middle text-danger me-2"></i>
+                                                    {% elif extension_with_dot == '.js' %}
+                                                        <i class="mdi mdi-language-javascript font-size-16 align-middle text-warning me-2"></i>
+                                                    {% elif extension_with_dot in ['.css', '.scss'] %}
+                                                        <i class="mdi mdi-language-css3 font-size-16 align-middle text-warning me-2"></i>
+                                                    {% elif extension_with_dot == '.py' %}
+                                                        <i class="mdi mdi-language-python font-size-16 align-middle text-primary-emphasis me-2"></i>
+                                                    {% elif extension_with_dot == 'txt' %}
+                                                        <i class="mdi mdi-text-box font-size-16 align-middle text-black me-2"></i>
+                                                    {% elif extension_with_dot in ['.zip', '.7z'] %}
+                                                        <i class="mdi mdi-folder-zip font-size-16 align-middle text-black me-2"></i>
+                                                    {% elif extension_with_dot == '.pdf' %}
+                                                        <i class="mdi mdi-file-pdf font-size-16 align-middle text-danger me-2"></i>
+                                                    {% else %}
+                                                        <i class="mdi mdi-file-find font-size-16 align-middle text-black me-2"></i>
+                                                    {% endif %}
+                                                {% endif %}
+                                                {{ details.name }}
+                                            </a>
+                                        </td>
+                                        <td>{{ details.last_modified }}</td>
+                                        <td>{{ details.size }}</td>
+                                        <td>{{ details.location }}</td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <a class="font-size-16 text-muted" role="button"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true">
+                                                    <i class="mdi mdi-dots-horizontal"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    {% if details.type == 'file' and extension_with_dot == '.zip' %}
+                                                    <form method="POST" action="/edits/static-view/unzip">
+                                                        <button class="dropdown-item" type="submit">Unzip</button>
+                                                        <input type="hidden" name="location" value="{{ folder_location }}"/>
+                                                        <input type="hidden" name="detail_location" value="{{ details.location }}" />
+                                                    </form>
+                                                    {% endif %}
+                                                    {% if details.type == 'folder' or not folder_location %}
+                                                    <button class="dropdown-item" href="{{ '/edits'+details.location }}">Open</button>
+                                                    {% else %}
+                                                    <a class="dropdown-item" {% if details.type == 'file' %}target="_blank"{% endif %} href="{{ details.location }}">Open</a>
+                                                    {% endif %}
+                                                    <a class="dropdown-item rename-item" href="#" data-bs-toggle="modal" data-bs-target="#renameFileFolderModal" data-whatever="{{ details.name }}">Rename</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <form method="POST" action="/edits/static-view/delete">
+                                                        <button class="dropdown-item" type="submit">Delete</button>
+                                                        <input type="hidden" name="location" value="{{ folder_location }}"/>
+                                                        <input type="hidden" name="detail_location" value="{{ details.location }}" />
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('edits.static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
