@@ -1,5 +1,5 @@
 
-# Flask Edits
+# Editable Flask
 
 Tired of constant client requests to tweak that elusive snippet or image on your **/about** page?
 
