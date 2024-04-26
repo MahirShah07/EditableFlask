@@ -8,7 +8,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name='EditableFlask',
-    version='0.1',
+    version='1.0',
     description='Addon to Library named flask which helps to edit html content in running app0',
     long_description=long_description,
     long_description_content_type='text/markdown',  # Specify the content type as Markdown
