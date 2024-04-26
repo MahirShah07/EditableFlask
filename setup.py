@@ -22,5 +22,8 @@ setup(
     ],
     keywords='editable_flask',
     packages=find_packages(),
+    package_data={
+        'EditableFlask': ['templates/*.html', 'assets/**'],
+    },
     install_requires=['Flask', 'flask_login']
 )

@@ -22,9 +22,11 @@ class EditableExtension(Extension):
         else:
             original = section
         new = ''
+        RemoveString = """Output(nodes=[TemplateData(data=" """
+        RemoveString = RemoveString[:-1]
         for i in original:
             new = new + str(i)
-            if new == "Output(nodes=[TemplateData(data='":
+            if new == "Output(nodes=[TemplateData(data='" or new == RemoveString:
                 new = ''
         original = new[:-4]
         _db.setdefault(parser.name, OrderedDict())

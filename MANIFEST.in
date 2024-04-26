@@ -1,2 +1,2 @@
-recursive-include flask_edits/templates *
-recursive-include flask_edits/static *
+include EditableFlask/templates/*.html
+include EditableFlask/assets/*

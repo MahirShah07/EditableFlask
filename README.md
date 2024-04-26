@@ -30,6 +30,21 @@ app = Flask(__name__)
 app.config['FILE_PATH'] = os.path.dirname(__file__)
 edits = Edits(app)
 
+@app.route("/")
+    def index():
+        return render_template('index.html')
+```
+```html
+<!--index.html-->
+<!DOCTYPE html>
+<html>
+<body>
+    <!--Add these editable jinja tags to mark them editable-->
+<h1>{% editable 'heading' %}My First Heading{% endeditable %}</h1>
+<p>{% editable 'paragraph' %}My first paragraph.{% endeditable %}</p>
+</body>
+</html>
+
 ```
 
 ## Edits Seaction
@@ -61,7 +76,7 @@ Now you can access all your edits from **/edits** (default) but to make it secur
 **Security Reminder**: EditableFlask doesn't presume your authentication method by default. Protect the admin interface from following methods from developer.
 * **Automatic Lock** (Reccomended): In EditableFlask itself there is an **sqlalchamy** based login manager if you want to use that use the following code. There are few points to consider before using the method.
     ```bash
-    from flask import Flask
+    from flask import Flask, render_template
     from EditableFlask import Edits
     import os
 
@@ -72,6 +87,10 @@ Now you can access all your edits from **/edits** (default) but to make it secur
     app.config['EDITS_USERNAME'] = 'your_username'
     app.config['EDITS_PASSWORD'] = 'your_password'
     edits = Edits(app)
+
+    @app.route("/")
+    def index():
+        return render_template('index.html')
     ```
     ![App Screenshot](https://raw.githubusercontent.com/MahirShah07/EditableFlask/main/readme-images/Image3.png)
     * **EDITS_USERNAME & EDITS_PASSWORD**
@@ -126,7 +145,7 @@ Now you can access all your edits from **/edits** (default) but to make it secur
 
 ## Authors
 - [@MahirShah07](https://www.mahirshah.dev)
-  
+
 View This Repository at GitHub: https://github.com/MahirShah07/EditableFlask
 ## Support
 For support, email mahir.shah.sd@gmail.com or join our contact me from my Website https://mahirshah.dev.
