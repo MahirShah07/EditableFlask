@@ -21,7 +21,7 @@
                     <h5 class="modal-title" id="createFolderModalLabel">Create Folder</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="POST" action="/edits/static-view/create_folder">
+                <form method="POST" action="{{ url_for('edits.static_view', action='create_folder') }}">
                     <input type="hidden" name="location" value="{{ folder_location }}" />
                     <div class="modal-body">
                         <div class="mb-3">
@@ -45,7 +45,7 @@
                         <h5 class="modal-title" id="uploadFileModalLabel">Upload Files</h5>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
-                    <form method="POST" action="/edits/static-view/upload" enctype='multipart/form-data'>
+                    <form method="POST" action="{{ url_for('edits.static_view', action='upload') }}" enctype='multipart/form-data'>
                         <table>
                             <tr>
                                 <div class="modal-body">
@@ -87,7 +87,7 @@
                     <h5 class="modal-title" id="createFolderModalLabel">Rename File/Folder</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="POST" action="/edits/static-view/rename">
+                <form method="POST" action="{{ url_for('edits.static_view', action='rename') }}">
                     <input type="hidden" name="location" value="{{ folder_location }}" />
                     <div class="modal-body">
                         <div class="mb-3">
@@ -117,7 +117,7 @@
                             <div class="col-lg-4 col-sm-6">
                                 {% if folder_location %} 
                                 <div class="search-box mb-2 me-2 position-relative">
-                                    <form method="POST" action="/edits/static-view/search">
+                                    <form method="POST" action="{{ url_for('edits.static_view', action='search') }}">
                                         <input type="hidden" name="location" value="{{ folder_location }}" />
                                         <table>
                                             <td>
@@ -165,7 +165,7 @@
                                                 </a>  
                                             </div>
                                             <button style="display: none;" class="btn btn-primary">
-                                            <form method="POST" action="/edits/static-view/back">
+                                            <form method="POST" action="{{ url_for('edits.static_view', action='back') }}">
                                                 <input type="hidden" name="location" value="{{ folder_location }}" />
                                                 <button class="btn btn-primary" type="submit">
                                                     <i class="mdi mdi-keyboard-return me-1"></i> Back
@@ -178,7 +178,7 @@
                                                 <i class="mdi mdi-keyboard-return me-1"></i> Back
                                             </a>
                                             {% endif %}
-                                            <a class="btn btn-primary" href="/edits" type="button">
+                                            <a class="btn btn-primary" href="{{ url_for('edits.index') }}" type="button">
                                                 <i class="mdi mdi-home me-1"></i> Home
                                             </a>
                                         </div>
@@ -206,7 +206,7 @@
                                     {% for item, details in contents.items() %}
                                     <tr>
                                         <td>
-                                            <a href="{{ '/edits'+details.location }}"{% if details.type == 'file' %}target="_blank"{% endif %} class="text-dark fw-medium">
+                                            <a href="{{ details.location }}"{% if details.type == 'file' %}target="_blank"{% endif %} class="text-dark fw-medium">
                                                 {% if details.type == 'folder' %}
                                                     <i class="mdi mdi-folder font-size-16 align-middle text-warning me-2"></i>
                                                 {% elif details.type == 'file' %}
@@ -245,23 +245,23 @@
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     {% if details.type == 'file' and extension_with_dot == '.zip' %}
-                                                    <form method="POST" action="/edits/static-view/unzip">
+                                                    <form method="POST" action="{{ url_for('edits.static_view', action='unzip') }}">
                                                         <button class="dropdown-item" type="submit">Unzip</button>
                                                         <input type="hidden" name="location" value="{{ folder_location }}"/>
-                                                        <input type="hidden" name="detail_location" value="{{ details.location }}" />
+                                                        <input type="hidden" name="detail_location" value="{{ details.path }}" />
                                                     </form>
                                                     {% endif %}
                                                     {% if details.type == 'folder' or not folder_location %}
-                                                    <button class="dropdown-item" href="{{ '/edits'+details.location }}">Open</button>
+                                                    <a class="dropdown-item" href="{{ details.location }}">Open</a>
                                                     {% else %}
                                                     <a class="dropdown-item" {% if details.type == 'file' %}target="_blank"{% endif %} href="{{ details.location }}">Open</a>
                                                     {% endif %}
                                                     <a class="dropdown-item rename-item" href="#" data-bs-toggle="modal" data-bs-target="#renameFileFolderModal" data-whatever="{{ details.name }}">Rename</a>
                                                     <div class="dropdown-divider"></div>
-                                                    <form method="POST" action="/edits/static-view/delete">
+                                                    <form method="POST" action="{{ url_for('edits.static_view', action='delete') }}">
                                                         <button class="dropdown-item" type="submit">Delete</button>
                                                         <input type="hidden" name="location" value="{{ folder_location }}"/>
-                                                        <input type="hidden" name="detail_location" value="{{ details.location }}" />
+                                                        <input type="hidden" name="detail_location" value="{{ details.path }}" />
                                                     </form>
                                                 </div>
                                             </div>

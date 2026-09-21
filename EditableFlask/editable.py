@@ -1,45 +1,52 @@
+"""Jinja extension implementing the ``editable`` block tag."""
+
+from __future__ import annotations
+
 from collections import OrderedDict
-from jinja2.nodes import Template, TemplateData, Scope, Output
+
+from flask import has_request_context, request
+from jinja2 import nodes
 from jinja2.ext import Extension
-import re
+from markupsafe import Markup
 
 
 class EditableExtension(Extension):
+    """Render editable blocks and register their original content.
+
+    A ``CallBlock`` is used instead of relying on Jinja's private AST string
+    representation. This keeps the extension compatible with modern Jinja
+    releases and allows expressions inside editable blocks to render normally.
+    """
+
     tags = {"editable"}
 
     def parse(self, parser):
-        _db = self.environment.edits
-        lineno = int(next(parser.stream).lineno)
-        # Get section key
-        key = parser.parse_expression().value
-        # Read editable section
-        section = parser.parse_statements(["name:endeditable"], drop_needle=True)
-        # Render original section contents
-        if isinstance(section, Template):
-            original = section.render()
-        elif isinstance(section, list):
-            original = "".join(str(s) for s in section)
-        else:
-            original = section
-        new = ''
-        RemoveString = """Output(nodes=[TemplateData(data=" """
-        RemoveString = RemoveString[:-1]
-        for i in original:
-            new = new + str(i)
-            if new == "Output(nodes=[TemplateData(data='" or new == RemoveString:
-                new = ''
-        original = new[:-4]
-        _db.setdefault(parser.name, OrderedDict())
-        _db[parser.name].setdefault(key, OrderedDict())
-        _db[parser.name][key].setdefault("original", original)
-        _db[parser.name][key].setdefault("edited", None)
-        if _db[parser.name][key].get("edited", None):
-            if self.environment.edits_preview:
-                if self.environment.globals["request"].args.get("preview"):
-                    return [Output([TemplateData(_db[parser.name][key]["edited"])])]
-                else:
-                    return section
-            else:
-                return [Output([TemplateData(_db[parser.name][key]["edited"])])]
-        else:
-            return section
+        token = next(parser.stream)
+        key = parser.parse_expression()
+        body = parser.parse_statements(["name:endeditable"], drop_needle=True)
+        template_name = nodes.Const(parser.name or "__string__")
+        call = self.call_method("_render_editable", [key, template_name])
+        return nodes.CallBlock(call, [], [], body).set_lineno(token.lineno)
+
+    def _render_editable(self, key, template_name, caller):
+        original = caller()
+        database = self.environment.edits
+        page = template_name or "__string__"
+        page_edits = database.setdefault(page, OrderedDict())
+        section = page_edits.setdefault(str(key), OrderedDict())
+        section.setdefault("original", str(original))
+        section.setdefault("edited", None)
+
+        edited = section.get("edited")
+        if edited is None:
+            return original
+
+        preview_enabled = self.environment.edits_preview
+        show_preview = (
+            has_request_context()
+            and request.args.get("preview", "").lower() in {"1", "true", "yes", "on"}
+        )
+        if preview_enabled and not show_preview:
+            return original
+
+        return Markup(edited)
