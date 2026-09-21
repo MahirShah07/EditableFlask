@@ -8,15 +8,18 @@ Enter **EditableFlask**. Simply mark sections of your templates with **{% editab
 ![App Screenshot](https://raw.githubusercontent.com/MahirShah07/EditableFlask/main/readme-images/Image1.png)
 ## Installation
 ```bash
-  pip install EditableFlask
+pip install --upgrade EditableFlask
 ```
+
+EditableFlask 2 supports Python 3.9–3.14, Flask 2.3–3.1, and Jinja 3.1.
+To use the optional built-in SQL login, install `pip install "EditableFlask[sql]"`.
 ## Usage
 ```bash
 from flask import Flask
 from EditableFlask import Edits
 
 app = Flask(__name__)
-edits = Edits(app)
+edits = Edits(app)  # edits.json is stored in Flask's instance folder by default
 
 ```
 All edits are neatly saved to disk as JSON. Configure your python file path to store them alongside your app for seamless version control.
@@ -27,12 +30,12 @@ from EditableFlask import Edits
 import os
 
 app = Flask(__name__)
-app.config['FILE_PATH'] = os.path.dirname(__file__)
+app.config['EDITS_PATH'] = os.path.dirname(__file__)
 edits = Edits(app)
 
 @app.route("/")
-    def index():
-        return render_template('index.html')
+def index():
+    return render_template('index.html')
 ```
 ```html
 <!--index.html-->
@@ -82,7 +85,7 @@ Now you can access all your edits from **/edits** (default) but to make it secur
 
     app = Flask(__name__)
     app.secret_key = 'your_secret_key_here' #DO NOT SHARE THIS WITH ANYONE
-    app.config['FILE_PATH'] = os.path.dirname(__file__)
+    app.config['EDITS_PATH'] = os.path.dirname(__file__)
     app.config['SQL_EDITS_LOCKED'] = True
     app.config['EDITS_USERNAME'] = 'your_username'
     app.config['EDITS_PASSWORD'] = 'your_password'
@@ -134,14 +137,32 @@ Now you can access all your edits from **/edits** (default) but to make it secur
     import os
 
     app = Flask(__name__)
-    app.config['FILE_PATH'] = os.path.dirname(__file__)
+    app.config['EDITS_PATH'] = os.path.dirname(__file__)
     app.config['EDITS_LOCKED'] = True
-    app.config['EDITS_ROUTE'] = '/login'
+    app.config['LOGIN_ROUTE'] = '/login'
     #Mention your apps login route where you are loggin in users.
     edits = Edits(app)
     ```
 ## Resources
  - [MDI Icons From pictogrammers](https://pictogrammers.github.io/@mdi/font/2.0.46/)
+
+## Application factories
+
+```python
+edits = Edits()
+
+def create_app():
+    app = Flask(__name__)
+    edits.init_app(app)
+    return app
+```
+
+## Releases
+
+Every pull request and every push to `main` is tested across all supported
+Python versions. A tag such as `v2.0.0` builds and publishes the matching
+version to PyPI through Trusted Publishing; no long-lived PyPI API token is
+stored in GitHub.
 
 ## Authors
 - [@MahirShah07](https://www.mahirshah.dev)
@@ -158,5 +179,4 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 

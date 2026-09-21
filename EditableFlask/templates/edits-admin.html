@@ -55,7 +55,7 @@
               <label style="font-weight: normal; vertical-align:middle;">Preview</label>
               &nbsp;&nbsp;
               <input type="checkbox" name="mode" {% if preview %}checked{% endif %} />
-              <a type="submit" href="/edits/logout" class="btn btn-logout">Logout</a>
+              {% if sql_locked %}<a href="{{ url_for('edits.logout') }}" class="btn btn-logout">Logout</a>{% endif %}
             </div>
         </div>
       </div>
@@ -72,10 +72,10 @@
                   {{ page }}
                 </a>
               {% endfor %}
-              <a href="{{ url_for('edits.index', page='static') }}" class="list-group-item">
+              {% if static_manager %}<a href="{{ url_for('edits.retrive_static') }}" class="list-group-item">
                 <span class="badge"></span>
                 STATIC
-              </a>
+              </a>{% endif %}
             </div>
           </div>
         </div>
