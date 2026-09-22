@@ -55,7 +55,7 @@ class Edits:
         app.jinja_env.edits = database
         app.jinja_env.edits_preview = bool(app.config["EDITS_PREVIEW"])
         app.jinja_env.edits_cache = copy_cache(app.jinja_env.cache)
-        if app.jina_env.edits_preview:
+        if app.jinja_env.edits_preview:
             app.jinja_env.cache = None
 
         if app.config["SQL_EDITS_LOCKED"]:
