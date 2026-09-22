@@ -1,4 +1,5 @@
 """Views used by EditableFlask's administration blueprint."""
+# Developed by Mahir Shah
 
 from __future__ import annotations
 

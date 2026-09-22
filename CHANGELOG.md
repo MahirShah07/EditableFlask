@@ -1,4 +1,11 @@
+<!-- Developed by Mahir Shah -->
 # Changelog
+
+## 2.0.1
+
+- Republish the Flask 3 and Python 3.14 compatibility release under a new,
+  previously unused PyPI version.
+- Verify release tags match the package version before publishing.
 
 ## 2.0.0
 

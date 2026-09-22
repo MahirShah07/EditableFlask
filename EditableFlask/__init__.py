@@ -1,4 +1,5 @@
 """EditableFlask extension for editable regions in Flask templates."""
+# Developed by Mahir Shah
 
 from __future__ import annotations
 
@@ -11,7 +12,7 @@ from jinja2.environment import copy_cache
 from .editable import EditableExtension
 from .views import create_edits_blueprint, init_login
 
-__version__ = "2.0.0"
+__version__ = "2.0.1"
 
 
 class Edits:

@@ -1,3 +1,4 @@
+<!-- Developed by Mahir Shah -->
 # Releasing EditableFlask
 
 ## One-time PyPI setup

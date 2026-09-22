@@ -1,2 +1,3 @@
+# Developed by Mahir Shah
 include EditableFlask/templates/*.html
 include EditableFlask/assets/*

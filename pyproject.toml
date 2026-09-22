@@ -1,10 +1,11 @@
+# Developed by Mahir Shah
 [build-system]
 requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "EditableFlask"
-version = "2.0.0"
+version = "2.0.1"
 description = "Editable content regions and a lightweight admin panel for Flask"
 readme = "README.md"
 requires-python = ">=3.9"

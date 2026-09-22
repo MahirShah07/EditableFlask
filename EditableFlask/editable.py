@@ -1,4 +1,5 @@
 """Jinja extension implementing the ``editable`` block tag."""
+# Developed by Mahir Shah
 
 from __future__ import annotations
 
