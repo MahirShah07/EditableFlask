@@ -28,7 +28,7 @@ dependencies = [
   "Flask-Login>=0.6.3,<1",
 ]
 
-[project.optional-depencies]
+[project.optional-dependencies]
 sql = ["Flask-SQLAlchemy>=3.1,<4"]
 test = [
   "Flask-SQLAlchemy>=3.1,<4",
