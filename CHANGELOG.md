@@ -1,6 +1,11 @@
 <!-- Developed by Mahir Shah -->
 # Changelog
 
+## 2.0.2
+
+- Publish the compatibility release under a previously unused PyPI filename;
+  PyPI permanently reserves deleted `2.0.1` distribution filenames.
+
 ## 2.0.1
 
 - Republish the Flask 3 and Python 3.14 compatibility release under a new,

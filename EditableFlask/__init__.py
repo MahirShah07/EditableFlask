@@ -12,7 +12,7 @@ from jinja2.environment import copy_cache
 from .editable import EditableExtension
 from .views import create_edits_blueprint, init_login
 
-__version__ = "2.0.1"
+__version__ = "2.0.2"
 
 
 class Edits:
@@ -55,7 +55,7 @@ class Edits:
         app.jinja_env.edits = database
         app.jinja_env.edits_preview = bool(app.config["EDITS_PREVIEW"])
         app.jinja_env.edits_cache = copy_cache(app.jinja_env.cache)
-        if app.jinja_env.edits_preview:
+        if app.jina_env.edits_preview:
             app.jinja_env.cache = None
 
         if app.config["SQL_EDITS_LOCKED"]:
