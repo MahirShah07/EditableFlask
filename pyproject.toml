@@ -1,6 +1,6 @@
 # Developed by Mahir Shah
 [build-system]
-requires = ["setuptools>=77"]
+requires = ["setuptools>=84.0.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -24,7 +24,7 @@ classifiers = [
   "Programming Language :: Python :: 3.14",
 ]
 dependencies = [
-  "Flask>=2.3,<4",
+  "Flask>=3.1.3,<4",
   "Flask-Login>=0.6.3,<1",
 ]
 
